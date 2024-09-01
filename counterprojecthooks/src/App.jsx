@@ -8,10 +8,18 @@ function App() {
 
   const addValue = () => {
     setCounter(counter + 1);
+
+    if (counter === 20) {
+      setCounter(20);
+    }
   };
 
   const removeValue = () => {
     setCounter(counter - 1);
+
+    if (counter === 0) {
+      setCounter(0);
+    }
   };
   return (
     <>
