@@ -4,7 +4,7 @@ function App() {
   const [color, setColor] = useState("white");
   return (
     <div
-      className="w-full h-screen duration-150 "
+      className="w-full h-screen duration-1000 "
       style={{ backgroundColor: color }}
     >
       <div className="fixed bottom-9 flex flex-wrap justify-center inset-x-0 px-2">
