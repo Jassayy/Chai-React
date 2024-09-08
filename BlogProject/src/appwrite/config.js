@@ -1,4 +1,4 @@
-import conf from "../config/conf";
+import conf from "../conf/conf.js";
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
@@ -7,9 +7,10 @@ export class Service {
   bucket;
 
   constructor() {
-    this.client.setEndpoint(conf.appwriteUrl).setProject(conf.projectId);
-
-    this.databases = new Database(this.client);
+    this.client
+      .setEndpoint(conf.appwriteUrl)
+      .setProject(conf.appwriteProjectId);
+    this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
 
@@ -25,12 +26,10 @@ export class Service {
           featuredImage,
           status,
           userId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
         }
       );
     } catch (error) {
-      console.log("APPWRITE SERVICE :: CREATE POST :: " + error);
+      console.log("Appwrite serive :: createPost :: error", error);
     }
   }
 
@@ -45,11 +44,10 @@ export class Service {
           content,
           featuredImage,
           status,
-          updatedAt: new Date().toISOString(),
         }
       );
     } catch (error) {
-      console.log("APPWRITE SERVICE :: UPDATE POST :: " + error);
+      console.log("Appwrite serive :: updatePost :: error", error);
     }
   }
 
@@ -62,40 +60,38 @@ export class Service {
       );
       return true;
     } catch (error) {
-      console.log("APPWRITE SERVICE :: DELETE POST :: " + error);
+      console.log("Appwrite serive :: deletePost :: error", error);
       return false;
     }
   }
 
-  //get a single post
   async getPost(slug) {
     try {
       return await this.databases.getDocument(
         conf.appwriteDatabaseId,
-        appwriteCollectionId,
+        conf.appwriteCollectionId,
         slug
       );
     } catch (error) {
-      console.log("APPWRITE ERROR :: GET POST :: " + error);
+      console.log("Appwrite serive :: getPost :: error", error);
       return false;
     }
   }
 
-  async getAllPosts(queries = [Query.equal("status", "active")]) {
+  async getPosts(queries = [Query.equal("status", "active")]) {
     try {
-      //not returning listDocuments cuz all thr docs will get returned even if status if NOT OKAY
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         queries
       );
     } catch (error) {
-      console.log("APPWRITE ERROR :: GET ALL POSTS :: " + error);
+      console.log("Appwrite serive :: getPosts :: error", error);
       return false;
     }
   }
 
-  //File Upload methods (can do in another folder too)
+  // file upload service
 
   async uploadFile(file) {
     try {
@@ -105,16 +101,17 @@ export class Service {
         file
       );
     } catch (error) {
-      console.log("APPWRITE ERROR:: UPLOAD FILE:: " + error);
+      console.log("Appwrite serive :: uploadFile :: error", error);
+      return false;
     }
   }
 
   async deleteFile(fileId) {
     try {
-      return await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
+      await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
       return true;
     } catch (error) {
-      console.log("APPWRITE ERROR:: DELETE FILE :: " + error);
+      console.log("Appwrite serive :: deleteFile :: error", error);
       return false;
     }
   }
