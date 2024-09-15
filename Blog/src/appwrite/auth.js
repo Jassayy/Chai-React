@@ -18,11 +18,9 @@ export class AuthService {
         password,
         name
       );
-
       if (userAccount) {
-        //call another method
-        this.login({ email, password });
-        //useraccount ban gya hai toh seedha login hi krwa do na
+        // call another method
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
@@ -43,18 +41,18 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      console.log("appwrite error: getcurrentuser :: ", error);
+      console.log("Appwrite serive :: getCurrentUser :: error", error);
     }
+
     return null;
   }
 
-  async logout(){
-      try {
-            await this.account.deleteSessions()
-      } catch (error) {
-            console.log("appwrite error : logout :: ", error);
-            
-      }
+  async logout() {
+    try {
+      await this.account.deleteSessions();
+    } catch (error) {
+      console.log("Appwrite serive :: logout :: error", error);
+    }
   }
 }
 
