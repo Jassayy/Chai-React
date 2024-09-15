@@ -27,8 +27,8 @@ function App() {
     <div className="min-h-screen flex flex-wrap content-between bg-pink-700">
       <div className="w-full block">
         <Header />
-        <main>
-          TODO: <Outlet />
+        <main className="font-sans text-xl">
+          All Posts <Outlet />
         </main>
         <Footer />
       </div>
